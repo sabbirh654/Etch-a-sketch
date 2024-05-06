@@ -35,7 +35,15 @@ gridContainer.style.display = "flex";
 gridContainer.style.flexWrap= "wrap";
 
 const mouseEnterEventHandler = function(e) {
-    e.target.style.backgroundColor = "black";
+    let red = getRandom();
+    let green = getRandom();
+    let blue = getRandom();
+
+    e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+}
+
+function getRandom() {
+    return Math.floor(Math.random() * 256);
 }
 
 
