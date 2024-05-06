@@ -1,106 +1,64 @@
-
-const body = document.querySelector("body");
-body.style.boxSizing = "border-box";
-
-const GRID_CONTAINER_WIDTH = 960;
-const GRID_CONTAINER_HEIGHT = 960; 
-
-const mainContainer = document.querySelector(".main-container");
-
-//button
-const button = document.createElement("button");
-button.textContent = "Click to set grid size";
-button.style.width = "200px";
-button.style.height = "50px";
+const GRID_SIZE = 960;
+let boxCount = 16;
 
 //grid container
 const div = document.createElement("div");
-div.style.outline = "1px solid black";
-div.style.width = GRID_CONTAINER_WIDTH + 'px';
-div.style.height = GRID_CONTAINER_HEIGHT + 'px';
 div.classList.add("grid-container");
 
-//main container
-mainContainer.style.display = "flex";
-mainContainer.style.flexDirection = "column";
-mainContainer.style.gap = "24px";
-mainContainer.style.alignItems = "center";
-
-mainContainer.appendChild(button);
-mainContainer.appendChild(div);
-
-//grid container
 const gridContainer = document.querySelector(".grid-container");
-gridContainer.style.display = "flex";
-gridContainer.style.flexWrap= "wrap";
 
 const mouseEnterEventHandler = function(e) {
-    let red = getRandom();
-    let green = getRandom();
-    let blue = getRandom();
-
+    let red = getRandomNumber();
+    let green = getRandomNumber();
+    let blue = getRandomNumber();
     e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 }
 
-function getRandom() {
-    return Math.floor(Math.random() * 256);
+function createSquareBoxes(boxCount) {
+    for(let i = 0; i < boxCount * boxCount; i++) {
+        const squareBox = document.createElement("div");
+        squareBox.classList.add("square");
+        squareBox.style.width = GRID_SIZE / boxCount + 'px';
+        squareBox.style.height = GRID_SIZE / boxCount + 'px';
+        gridContainer.append(squareBox);
+        squareBox.addEventListener('mouseenter', mouseEnterEventHandler);
+    }
 }
 
-
-for(let i = 0; i < 16 * 16; i++) {
-
-    const grid = document.createElement("div");
-    grid.classList.add("grid");
-    grid.style.display = "flex";
-    grid.style.width = "60px";
-    grid.style.height = "60px";
-    grid.style.outline = "1px solid black";
-    gridContainer.append(grid);
-
-    grid.addEventListener('mouseenter', mouseEnterEventHandler);
+function getRandomNumber() {
+    return Math.floor(Math.random() * 256);
 }
 
 const buttonEventHandler = function() {
 
-    const input = GetUserInput();
+    const input = getUserInput();
 
     if(input === undefined) {
         return;
     }
 
-    let squareBoxWidth = (GRID_CONTAINER_WIDTH / input) + 'px';
-    let squareBoxHeight = squareBoxWidth;
-
-    gridContainer.innerHTML = "";
-
-    for(let i = 0; i < input * input; i++) {
-
-        const grid = document.createElement("div");
-        grid.classList.add("grid");
-        grid.style.width = squareBoxWidth
-        grid.style.height = squareBoxHeight;
-        grid.style.outline = "1px solid black";
-        gridContainer.append(grid);
-
-        grid.addEventListener('mouseenter', mouseEnterEventHandler);
-    }
+    resetGrid();
+    createSquareBoxes(input)
 }
 
-function GetUserInput() {
-    const value = (prompt("Enter a value : "));
+function resetGrid() {
+    gridContainer.innerHTML = "";
+} 
 
-    if(value === null) {
-        return;
+function getUserInput() {
+    const value = (prompt("Enter a value between 0 and 100: "));
+
+    if(Number.isInteger(+value) && +value >= 0 && +value <= 100) {
+        return +value;
     }
 
-    if(value === null || isNaN(value) || value < 0 || value > 100) {
-        GetUserInput();
-    }
-
-    return +value;
+    alert("invalid input")
+    getUserInput();
 }
 
 const btn = document.querySelector("button");
 btn.addEventListener('click', buttonEventHandler);
+
+createSquareBoxes(boxCount);
 
 

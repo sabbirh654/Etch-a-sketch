@@ -1,3 +1,29 @@
+html {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    width: 20%;
+    height: 50px;
+    margin: 0 40%;
+}
+
 .grid-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 24px auto;
+    width: 960px;
+    height: 960px;
+}
+
+.grid-container {
+    outline: 1px solid black;
+}
+
+.square {
+    outline: 1px solid black;
 }
